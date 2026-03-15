@@ -1,86 +1,73 @@
-# Mini Customer Support Ticket System
+# React + TypeScript + Vite
 
-A full-stack ticket management system with real-time updates and email notifications.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Tech Stack
+Currently, two official plugins are available:
 
-### Backend
-- **Express.js** (Node.js framework)
-- **TypeScript**
-- **Prisma ORM** (SQLite)
-- **JWT** (Authentication)
-- **Socket.io** (Real-time updates)
-- **Nodemailer** (Email notifications)
-- **Zod** (Validation)
-- **Axios** (API requests)
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-### Frontend
-- **React** (Vite)
-- **TypeScript**
-- **Tailwind CSS** (UI styling)
-- **Lucide-React** (Icons)
-- **Socket.io-client** (Real-time integration)
-- **Axios** (API communication)
+## React Compiler
 
-## Features
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-- **User Authentication**: Secure registration and login with password hashing and JWT.
-- **Ticket Management (CRUD)**: Create, view, update status (Open/Closed), and delete tickets.
-- **Real-Time Updates**: Instant UI updates when tickets are created, updated, or deleted using WebSockets.
-- **Email Notifications**: Automatically send emails when a ticket is created or closed.
-- **Third-Party API Integration**: Fetches and displays data from a public REST API in the dashboard.
-- **Responsive UI**: Modern dashboard built with Tailwind CSS.
+## Expanding the ESLint configuration
 
-## Getting Started
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-### Prerequisites
-- Node.js (v18+)
-- npm
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-### Installation
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-1.  **Clone the repository**:
-    ```bash
-    git clone <repository-url>
-    cd ticket-management
-    ```
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
 
-2.  **Setup Backend**:
-    ```bash
-    cd backend
-    npm install
-    # Generate Prisma Client and SQLite database
-    npx prisma db push
-    npx prisma generate
-    # Create .env file with necessary variables
-    ```
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-3.  **Setup Frontend**:
-    ```bash
-    cd ../frontend
-    npm install
-    ```
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-### Running the App
-
-1.  **Start Backend Server**:
-    ```bash
-    cd backend
-    npm run dev
-    ```
-    The backend will run on `http://localhost:5000`.
-
-2.  **Start Frontend Dev Server**:
-    ```bash
-    cd frontend
-    npm run dev
-    ```
-    The frontend will run on `http://localhost:5173` (or similar).
-
-## API Documentation
-A Postman collection is included in the root directory: `postman_collection.json`.
-
-## Folder Structure
-- `backend/`: Express server, Prisma schema, and API routes.
-- `frontend/`: React application, components, and services.
-- `prisma/`: Database migrations and schema.
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
